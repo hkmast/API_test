@@ -24,3 +24,7 @@ pipeline = DocumentSearchPipeline(retriever)
 
 def search(query, k):
     return pipeline.run(query, params={"Retriever": {"top_k": int(k)}})
+
+
+if __name__ == "__main__":
+    print(search("테스트", 1))

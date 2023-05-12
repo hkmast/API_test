@@ -2,11 +2,10 @@ FROM --platform=$BUILDPLATFORM python:3.10 AS builder
 
 WORKDIR /service
 
-COPY requirements.txt /service
-
 RUN apt update
 RUN pip install pip --upgrade
-RUN pip install -r requirements.txt
+RUN pip install flask
+RUN pip install farm-haystack[all]
 
 COPY . /service
 
@@ -19,4 +18,4 @@ ENV FLASK_RUN_HOST 0.0.0.0
 EXPOSE 8080
 
 # 구동 명령
-ENTRYPOINT [ "flask", "run"]
+ENTRYPOINT ["flask", "run"]
