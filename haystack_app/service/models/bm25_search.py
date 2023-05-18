@@ -1,30 +1,50 @@
 import os
-from haystack.pipelines.standard_pipelines import TextIndexingPipeline
-from haystack.document_stores import InMemoryDocumentStore
-from haystack.nodes import BM25Retriever
-from haystack.nodes import FARMReader
+from haystack.document_stores import ElasticsearchDocumentStore
+from haystack.nodes import DensePassageRetriever, TextConverter
 from haystack.pipelines import DocumentSearchPipeline
+from haystack import Pipeline
+from haystack.utils import convert_files_to_docs
+import os
+from haystack.document_stores import ElasticsearchDocumentStore, InMemoryDocumentStore
+from haystack.nodes import TextConverter, PreProcessor, BM25Retriever
+from haystack.pipelines import DocumentSearchPipeline, SearchSummarizationPipeline
+from haystack import Pipeline
 
+print("now dir ls = ", os.listdir("."))
+doc_dir = "./haystack_app/law_data"
 
-doc_dir = "./law_data"
-files_to_index = [doc_dir + "/" + f for f in os.listdir(doc_dir) if f.endswith(".txt")]
+# # Elasticsearch connection and set DocumentStore
+# host = os.environ.get("ELASTICSEARCH_HOST", "localhost")
+# document_store = ElasticsearchDocumentStore(
+#     host=host,
+#     username="",
+#     password="",
+#     index="bm25"
+# )
 
-# set document store
-document_store = InMemoryDocumentStore(use_bm25=True)
+document_store = InMemoryDocumentStore(use_bm25=True, bm25_algorithm="BM25Plus")
 
-# set data(pipeline)
-indexing_pipeline = TextIndexingPipeline(document_store)
-indexing_pipeline.run_batch(file_paths=files_to_index)
+# Convert files to dictionaries for indexing
+docs = convert_files_to_docs(dir_path=doc_dir, clean_func=None)
 
-# set retriever
+# Write documents to DocumentStore
+document_store.write_documents(docs)
+
+# Set BM25Retriever
 retriever = BM25Retriever(document_store=document_store)
 
-# set query pipeline
+# Set DocumentSearchPipeline
 pipeline = DocumentSearchPipeline(retriever)
-
+#
 def search(query, k):
     return pipeline.run(query, params={"Retriever": {"top_k": int(k)}})
 
-
 if __name__ == "__main__":
-    print(search("테스트", 1))
+    # print(search("매수신고인", 3)['documents'])
+    bm = search("매수신고인", 3)['documents']
+    print(bm)
+    
+    all_list = [i.meta['name'] for i in bm]
+
+    print(all_list)
+    
