@@ -5,8 +5,8 @@ COPY . /service
 
 RUN apt update && apt-get install python3 python3-pip -y
 RUN apt install build-essential -y
-RUN pip3 install pip3 --upgrade
-RUN pip3 install -r requirements.txt -y
+RUN pip3 install pip --upgrade
+RUN pip install -r requirements.txt
 
 # 환경변수
 ENV FLASK_APP app.py
