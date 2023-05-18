@@ -1,23 +1,16 @@
 FROM --platform=$BUILDPLATFORM python:3.10 AS builder
 
 WORKDIR /service
-
-RUN apt update
-RUN apt upgrade
-RUN apt install build-essential
-RUN pip install pip --upgrade
-RUN pip install flask
-RUN pip install farm-haystack
-RUN pip install farm-haystack[elasticsearch]
-# RUN pip install farm-haystack[all]
-
 COPY . /service
 
-# RUN pip install -r ./service/requirements.txt
+RUN apt update
+RUN apt install build-essential
+RUN pip install pip --upgrade
+RUN pip install -r requirements.txt
 
 # 환경변수
 ENV FLASK_APP app.py
-ENV FLASK_RUN_PORT 8080
+ENV FLASK_RUN_PORT 7777
 ENV FLASK_RUN_HOST 0.0.0.0
 
 EXPOSE 7777

@@ -14,9 +14,8 @@ print("now dir ls = ", os.listdir("."))
 doc_dir = "./haystack_app/law_data"
 
 # elasticsearch connection and set document store
-host = os.environ.get("ELASTICSEARCH_HOST", "localhost")
 document_store = ElasticsearchDocumentStore(
-    host=host,
+    host="elasticsearch_for_haystack_app",
     username="",
     password="",
     index="sbert"

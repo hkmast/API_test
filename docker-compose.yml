@@ -1,16 +1,37 @@
 services:
-  elasticsearch:
+  elasticsearch_for_haystack_app:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
-    container_name: elasticsearch
+    container_name: elasticsearch_for_haystack_app
     environment:
       - discovery.type=single-node
     ports:
       - 9200:9200
       - 9300:9300
+    networks:
+      - server_search
+    
   haystack_app:
+    container_name: haystack_app
     build:
       context: ./haystack_app
     ports:
       - 7777:7777
     depends_on:
-      - elasticsearch
+      - elasticsearch_for_haystack_app
+    networks:
+      - server_search
+
+  # test:
+  #   container_name: test
+  #   build:
+  #     context: ./test
+  #   ports:
+  #     - 7777:7777
+  #   depends_on:
+  #     - elasticsearch_for_haystack_app
+  #   networks:
+  #     - server_search
+
+
+networks:
+  server_search:
