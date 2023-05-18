@@ -4,9 +4,9 @@ WORKDIR /service
 COPY . /service
 
 RUN apt update
-RUN apt install build-essential
+RUN apt install build-essential -y
 RUN pip install pip --upgrade
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt -y
 
 # 환경변수
 ENV FLASK_APP app.py
