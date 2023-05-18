@@ -1,10 +1,12 @@
 from service import create_app
 import time
 
+t = 300
+
 print("waiting elastic server on...")
-for i in range(30):
+for i in range(t):
     time.sleep(1)
-    print(f"\rtime...{i+1}", end="")
+    print(f"loadging time...{i+1}/{t}", end="")
 print("\rwaiting elastic server on done")
 
 print("start flask app...")
