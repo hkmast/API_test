@@ -30,7 +30,7 @@ retriever = DensePassageRetriever(
     document_store=document_store,
     query_embedding_model="sentence-transformers/paraphrase-multilingual-mpnet-base-v2",  # 다국어에 어울리는 임베딩
     passage_embedding_model="sentence-transformers/paraphrase-multilingual-mpnet-base-v2",  # 다국어에 어울리는 임베딩
-    use_gpu=False,
+    use_gpu=True,
 )
 
 # embedding_model에 맞춰서 임베딩
