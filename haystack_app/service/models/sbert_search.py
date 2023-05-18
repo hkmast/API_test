@@ -3,6 +3,10 @@ from haystack.document_stores import ElasticsearchDocumentStore
 from haystack.nodes import DensePassageRetriever
 from haystack.pipelines import DocumentSearchPipeline
 from haystack.utils import convert_files_to_docs
+import logging
+
+logging.basicConfig(format="%(levelname)s - %(name)s -  %(message)s", level=logging.WARNING)
+logging.getLogger("haystack").setLevel(logging.INFO)
 
 # 지정한 위치에 있는 데이터를 받아옴
 print("now dir ls = ", os.listdir("."))
