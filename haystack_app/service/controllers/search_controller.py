@@ -49,14 +49,9 @@ def RRF(bm, sb, k):
         if s.meta["name"] not in sb_dict:
             sb_dict[s.meta["name"]] = 1 / (i + 1)
 
-    # print(f"bm_dict: {bm_dict}")
-    # print(f"sb_dict: {sb_dict}")
-
     for name in all_list:
         s1 = 0
         s2 = 0
-
-        # print(f"all_list: {name}")
 
         if name in bm_dict:
             s1 = bm_dict[name]
@@ -64,16 +59,9 @@ def RRF(bm, sb, k):
         if name in sb_dict:
             s2 = sb_dict[name]
 
-        # print(f"s1, s2: {s1, s2}")
-
-        # print(f"find content: {k}")
         for i in range(k):
             b = bm[i]
             s = sb[i]
-
-            # print(f"name: {name}")
-            # print(f"b.meta['name']: {b.meta['name']}")
-            # print(f"s.meta['name']: {s.meta['name']}")
 
             if b.meta["name"] == name:
                 res.append({"name": name, "score": s1 + s2, "content": b.content})
@@ -83,9 +71,5 @@ def RRF(bm, sb, k):
                 if s.meta["name"] == name:
                     res.append({"name": name, "score": s1 + s2, "content": s.content})
                     break
-
-                # else:print(f"error: {name}")
-
-            # print("-------------")
 
     return sorted(res, key=lambda x: -x["score"])[:k]
