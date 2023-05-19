@@ -6,8 +6,6 @@ services:
       - discovery.type=single-node
     networks:
       - server_search
-    ports:
-      - 9200:9200
 
   haystack_app:
     container_name: haystack_app
