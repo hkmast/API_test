@@ -4,12 +4,11 @@ services:
     container_name: elasticsearch_for_haystack_app
     environment:
       - discovery.type=single-node
-    ports:
-      - 9200:9200
-      - 9300:9300
     networks:
       - server_search
-    
+    ports:
+      - 9200:9200
+
   haystack_app:
     container_name: haystack_app
     build:
@@ -20,18 +19,6 @@ services:
       - elasticsearch_for_haystack_app
     networks:
       - server_search
-
-  # test:
-  #   container_name: test
-  #   build:
-  #     context: ./test
-  #   ports:
-  #     - 7777:7777
-  #   depends_on:
-  #     - elasticsearch_for_haystack_app
-  #   networks:
-  #     - server_search
-
 
 networks:
   server_search:
