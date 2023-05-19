@@ -5,7 +5,9 @@ from haystack.pipelines import DocumentSearchPipeline
 from haystack.utils import convert_files_to_docs
 import logging
 
-logging.basicConfig(format="%(levelname)s - %(name)s -  %(message)s", level=logging.WARNING)
+logging.basicConfig(
+    format="%(levelname)s - %(name)s -  %(message)s", level=logging.WARNING
+)
 logging.getLogger("haystack").setLevel(logging.INFO)
 
 # 지정한 위치에 있는 데이터를 받아옴
@@ -22,7 +24,9 @@ document_store = ElasticsearchDocumentStore(
 
 # 파일들을 딕셔너리 형태로 변환하여 색인
 docs = convert_files_to_docs(dir_path=doc_dir, clean_func=None)
+print(f"data set len: {len(document_store.get_all_documents())}")
 document_store.write_documents(docs)
+print(f"data insert len: {len(document_store.get_all_documents())}")
 
 # BM25 Retriever 설정
 retriever = BM25Retriever(document_store=document_store)
@@ -38,4 +42,6 @@ def search(query, k):
 
 # 테스트
 if __name__ == "__main__":
-    print(search("고속도로", 3)["documents"].meta)
+    res = search("고속도로", 3)["documents"]
+    print(res)
+    print([re.meta["name"] for re in res])
