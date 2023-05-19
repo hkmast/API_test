@@ -40,7 +40,6 @@ pipeline = DocumentSearchPipeline(retriever)
 def search(query, k):
     return pipeline.run(query, params={"Retriever": {"top_k": int(k)}})
 
-
 # 테스트
 if __name__ == "__main__":
-    print(search("매수신고인", 3)["documents"].meta)
+    print(search("고속도로", 3)["documents"].meta)
