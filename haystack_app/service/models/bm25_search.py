@@ -13,7 +13,7 @@ document_store = ElasticsearchDocumentStore(
     host="elasticsearch_for_haystack_app",  # local 환경 에서는 "localhost"
     username="",
     password="",
-    index="bm25_search" # 인덱스 설정
+    index="bm25_search",  # 인덱스 설정
 )
 
 # 파일들을 딕셔너리 형태로 변환하여 색인
@@ -26,9 +26,11 @@ retriever = BM25Retriever(document_store=document_store)
 # Document Search Pipeline 설정
 pipeline = DocumentSearchPipeline(retriever)
 
+
 # 검색 함수
 def search(query, k):
     return pipeline.run(query, params={"Retriever": {"top_k": int(k)}})
+
 
 # 테스트
 if __name__ == "__main__":
