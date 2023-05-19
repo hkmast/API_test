@@ -1,13 +1,8 @@
 import os
-from haystack.document_stores import ElasticsearchDocumentStore, InMemoryDocumentStore
-from haystack.nodes import DensePassageRetriever, TextConverter, PreProcessor, BM25Retriever
+from haystack.document_stores import ElasticsearchDocumentStore
+from haystack.nodes import BM25Retriever
 from haystack.pipelines import DocumentSearchPipeline
-from haystack import Pipeline
 from haystack.utils import convert_files_to_docs
-from haystack.nodes import TextConverter
-from haystack.pipelines import DocumentSearchPipeline, SearchSummarizationPipeline
-from haystack import Pipeline
-import logging
 
 # 지정한 위치에 있는 데이터를 받아옴
 print("now dir ls = ", os.listdir("."))
@@ -34,7 +29,6 @@ pipeline = DocumentSearchPipeline(retriever)
 # 검색 함수
 def search(query, k):
     return pipeline.run(query, params={"Retriever": {"top_k": int(k)}})
-
 
 # 테스트
 if __name__ == "__main__":
