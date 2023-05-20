@@ -5,7 +5,6 @@ from haystack.pipelines import DocumentSearchPipeline
 from haystack.utils import convert_files_to_docs
 import logging
 
-
 logging.basicConfig(
     format="%(levelname)s - %(name)s -  %(message)s", level=logging.WARNING
 )
@@ -13,11 +12,9 @@ logging.getLogger("haystack").setLevel(logging.INFO)
 
 # 지정한 위치에 있는 데이터를 받아옴
 print("now dir ls = ", os.listdir("."))
-doc_dir = "service/law_data"
-print("doc_dir ls = ", str(len(os.listdir(doc_dir))))
+doc_dir = "./haystack_app/law_data"
 
 # Elasticsearch를 document_store에 연결
-launch_es()
 document_store = ElasticsearchDocumentStore(
     host="elasticsearch_for_haystack_app",  # local 환경 에서는 "localhost"
     username="",
