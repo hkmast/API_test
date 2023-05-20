@@ -1,7 +1,7 @@
 from service import create_app
 import time
 
-t = 300
+t = 60
 
 print("waiting elastic server on...")
 for i in range(t):

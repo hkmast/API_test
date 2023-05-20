@@ -12,7 +12,9 @@ logging.getLogger("haystack").setLevel(logging.INFO)
 
 # 지정한 위치에 있는 데이터를 받아옴
 print("now dir ls = ", os.listdir("."))
-doc_dir = "./haystack_app/law_data"
+doc_dir = "service/law_data"
+print("doc_dir ls = ", str(len(os.listdir(doc_dir))))
+
 
 # Elasticsearch를 document_store에 연결
 document_store = ElasticsearchDocumentStore(
