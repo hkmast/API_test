@@ -14,7 +14,7 @@ def con_elastic(host, index):
 
 
 # elastic search 호스트 이름 정의 / local: "localhost", docker: "elasticsearch_for_haystack_app"
-ELASTIC_HOST_NAME = "localhost"
+ELASTIC_HOST_NAME = "elasticsearch_for_haystack_app"
 
 # 판례 sbert
 document_store_rate_sb = con_elastic(ELASTIC_HOST_NAME, "rate_sb")

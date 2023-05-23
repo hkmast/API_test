@@ -14,7 +14,7 @@ def con_elastic(host, index):
 
 
 # elastic search 호스트 이름 정의 / local: "localhost", docker: "elasticsearch_for_haystack_app"
-ELASTIC_HOST_NAME = "localhost"
+ELASTIC_HOST_NAME = "elasticsearch_for_haystack_app"
 
 # 판례 sbert
 document_store_law_sb = con_elastic(ELASTIC_HOST_NAME, "law_sb")
@@ -123,18 +123,17 @@ if __name__ == "__main__":
     print("bm")
     res = search_law_bm("고속도로", 3)
     print(res)
-    print([re['meta']["name"] for re in res])
+    print([re["meta"]["name"] for re in res])
     print("\n\n\n")
 
     print("sb")
     res = search_law_sb("고속도로", 3)
     print(res)
-    print([re['meta']["name"] for re in res])
+    print([re["meta"]["name"] for re in res])
     print("\n\n\n")
 
     print("hy")
     res = search_law_hybrid("고속도로", 3)
     print(res)
-    print([re['meta']["name"] for re in res])
+    print([re["meta"]["name"] for re in res])
     print("\n\n\n")
-
