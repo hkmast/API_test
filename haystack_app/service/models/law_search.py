@@ -63,21 +63,59 @@ pipeline_law_bm = DocumentSearchPipeline(retriever_law_bm)
 
 # sbert 검색 함수
 def search_law_sb(query, k):
-    return pipeline_law_sb.run(query, params={"Retriever": {"top_k": int(k)}})[
+    res = pipeline_law_sb.run(query, params={"Retriever": {"top_k": int(k)}})[
         "documents"
     ]
+    return ([re.to_dict() for re in res]) if res else []
 
 
 # bm25 검색 함수
 def search_law_bm(query, k):
-    return pipeline_law_bm.run(query, params={"Retriever": {"top_k": int(k)}})[
+    res = pipeline_law_bm.run(query, params={"Retriever": {"top_k": int(k)}})[
         "documents"
     ]
+    return ([re.to_dict() for re in res]) if res else []
 
 
 # hybrid 검색 함수
 def search_law_hybrid(query, k):
-    return 0
+    sbs = search_law_sb(query=query, k=k)
+    bms = search_law_bm(query=query, k=k)
+
+    return rrf(sbs, bms)[:k]
+
+
+def rrf(sbs, bms):
+    sb_names = [sb["meta"]["name"] for sb in sbs]
+    bm_names = [bm["meta"]["name"] for bm in bms]
+
+    scores = {
+        name: {"sb": 0, "bm": 0, "total": 0} for name in list(set(sb_names + bm_names))
+    }
+
+    for idx, sb in enumerate(sbs):
+        scores[sb["meta"]["name"]]["sb"] += 1 / (idx + 1)
+        scores[sb["meta"]["name"]]["total"] += 1 / (idx + 1)
+        scores[sb["meta"]["name"]]["content"] = sb["content"]
+
+    for idx, bm in enumerate(bms):
+        scores[bm["meta"]["name"]]["bm"] = 1 / (idx + 1)
+        scores[bm["meta"]["name"]]["total"] = 1 / (idx + 1)
+        scores[bm["meta"]["name"]]["content"] = bm["content"]
+
+    scores = sorted(list(scores.items()), key=lambda x: -x[1]["total"])
+
+    res = []
+    for score in scores:
+        res.append(
+            {
+                "content": score[1]["content"],
+                "score": score[1]["total"],
+                "meta": {"name": score[0]},
+            }
+        )
+
+    return res
 
 
 # 테스트
@@ -85,16 +123,18 @@ if __name__ == "__main__":
     print("bm")
     res = search_law_bm("고속도로", 3)
     print(res)
-    print([re.meta["name"] for re in res])
+    print([re['meta']["name"] for re in res])
     print("\n\n\n")
 
     print("sb")
     res = search_law_sb("고속도로", 3)
     print(res)
-    print([re.meta["name"] for re in res])
+    print([re['meta']["name"] for re in res])
     print("\n\n\n")
 
     print("hy")
-    # res = search_law_hybrid("고속도로", 3)
-    # print(res)
-    # print([re.meta["name"] for re in res])
+    res = search_law_hybrid("고속도로", 3)
+    print(res)
+    print([re['meta']["name"] for re in res])
+    print("\n\n\n")
+
