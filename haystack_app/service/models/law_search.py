@@ -24,7 +24,7 @@ document_store_law_bm = con_elastic(ELASTIC_HOST_NAME, "law_bm")
 
 # s3에서 데이터 저장
 doc_dir = "law_data"
-s3_url = "https://d2p6g4vi9p0tds.cloudfront.net/fault_rate/fault_rate.zip"
+s3_url = "https://d2p6g4vi9p0tds.cloudfront.net/law_case/law_case.zip"
 fetch_archive_from_http(url=s3_url, output_dir=doc_dir)
 
 
@@ -63,12 +63,16 @@ pipeline_law_bm = DocumentSearchPipeline(retriever_law_bm)
 
 # sbert 검색 함수
 def search_law_sb(query, k):
-    return pipeline_law_sb.run(query, params={"Retriever": {"top_k": int(k)}})
+    return pipeline_law_sb.run(query, params={"Retriever": {"top_k": int(k)}})[
+        "documents"
+    ]
 
 
 # bm25 검색 함수
 def search_law_bm(query, k):
-    return pipeline_law_bm.run(query, params={"Retriever": {"top_k": int(k)}})
+    return pipeline_law_bm.run(query, params={"Retriever": {"top_k": int(k)}})[
+        "documents"
+    ]
 
 
 # hybrid 검색 함수
@@ -78,6 +82,19 @@ def search_law_hybrid(query, k):
 
 # 테스트
 if __name__ == "__main__":
-    res = search_law_bm("고속도로", 3)["documents"]
+    print("bm")
+    res = search_law_bm("고속도로", 3)
     print(res)
     print([re.meta["name"] for re in res])
+    print("\n\n\n")
+
+    print("sb")
+    res = search_law_sb("고속도로", 3)
+    print(res)
+    print([re.meta["name"] for re in res])
+    print("\n\n\n")
+
+    print("hy")
+    # res = search_law_hybrid("고속도로", 3)
+    # print(res)
+    # print([re.meta["name"] for re in res])
