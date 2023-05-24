@@ -79,13 +79,16 @@ def search_law_bm(query, k):
 
 # hybrid 검색 함수
 def search_law_hybrid(query, k):
+    k = int(k)
     sbs = search_law_sb(query=query, k=k)
     bms = search_law_bm(query=query, k=k)
 
-    return rrf(sbs, bms)[:k]
+    return rrf(sbs, bms, k)
 
 
-def rrf(sbs, bms):
+def rrf(sbs, bms, k):
+    k = int(k)
+
     sb_names = [sb["meta"]["name"] for sb in sbs]
     bm_names = [bm["meta"]["name"] for bm in bms]
 
@@ -115,7 +118,7 @@ def rrf(sbs, bms):
             }
         )
 
-    return res
+    return res if len(res) <= k else res[:k]
 
 
 # 테스트
