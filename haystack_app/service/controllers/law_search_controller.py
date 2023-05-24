@@ -1,6 +1,6 @@
-from . import law_bp
 from flask import request, jsonify
 from service.models import law_search
+from service.controllers import law_bp
 
 
 @law_bp.route("/bm", methods=["POST"])
@@ -25,3 +25,8 @@ def hybrid():
     query = data["query"]
     k = data["k"]
     return jsonify(law_search.search_law_hybrid(query=query, k=k))
+
+
+@law_bp.route("/ping", methods=["GET","POST"])
+def ping():
+    return "pong"
