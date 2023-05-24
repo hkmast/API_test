@@ -1,7 +1,9 @@
 # cloud9 storage resize
+
 - `~/environment $` df -h
-    - 현재 사이즈 확인
+  - 현재 사이즈 확인
 - `~/environment $` nano resize.sh
+
 ```
 # !/bin/bash
 
@@ -65,10 +67,12 @@ else
   fi
 fi
 ```
+
 - `~/environment $` sh resize.sh 30
 - `~/environment $` df -h
 
 # docker-compose install
+
 - `sudo curl -L "https://github.com/docker/compose/releases/download/{version}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`
   - `sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`
   - 다운로드
@@ -78,3 +82,7 @@ fi
   - 경로 설정
 - `docker-compose -v`
   - 확인
+
+# elastic search run
+
+- `docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.9.2`
