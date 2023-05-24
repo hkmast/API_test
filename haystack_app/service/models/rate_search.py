@@ -121,19 +121,19 @@ def rrf(sbs, bms):
 # 테스트
 if __name__ == "__main__":
     print("bm")
-    res = search_law_bm("고속도로", 3)
+    res = search_rate_bm("고속도로", 3)
     print(res)
     print([re["meta"]["name"] for re in res])
     print("\n\n\n")
 
     print("sb")
-    res = search_law_sb("고속도로", 3)
+    res = search_rate_sb("고속도로", 3)
     print(res)
     print([re["meta"]["name"] for re in res])
     print("\n\n\n")
 
     print("hy")
-    res = search_law_hybrid("고속도로", 3)
+    res = search_rate_hybrid("고속도로", 3)
     print(res)
     print([re["meta"]["name"] for re in res])
     print("\n\n\n")
